@@ -49,6 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="sacks\Knapsack1.cs" />
+    <Compile Include="sacks\Knapsack5.cs" />
+    <Compile Include="sacks\Knapsack4.cs" />
+    <Compile Include="sacks\Knapsack3.cs" />
+    <Compile Include="sacks\Knapsack2.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

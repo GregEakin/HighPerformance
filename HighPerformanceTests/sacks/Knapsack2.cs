@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace HighPerformanceTests.sacks
 {
-    public class Knapsack1
+    public class Knapsack2
     {
         public struct Item
         {
@@ -21,7 +21,7 @@ namespace HighPerformanceTests.sacks
 
         private BitArray _selected;
 
-        private float _bestProfit;
+        private volatile float _bestProfit;
 
         // Future done = new Future();
 
@@ -31,7 +31,8 @@ namespace HighPerformanceTests.sacks
         {
             get
             {
-                // done.getValue();
+                // done.Value;
+                // rq.MaxThreadsWaiting = 0;
                 var s = new BitArray(_items.Length);
                 for (var i = 0; i < _items.Length; i++)
                 {
@@ -47,11 +48,12 @@ namespace HighPerformanceTests.sacks
             get
             {
                 // done.getValue();
+                // rq.MaxThreadsWaiting = 0;
                 return (int)_bestProfit;
             }
         }
 
-        public Knapsack1(int[] weights, int[] profits, int capacity)
+        public Knapsack2(int[] weights, int[] profits, int capacity)
         {
             if (weights.Length != profits.Length)
                 throw new ArgumentException("0/1 Knapsack: differing numbers of weights and profits");
@@ -71,8 +73,14 @@ namespace HighPerformanceTests.sacks
                     ProfitPerWeight = ((float)profits[i]) / weights[i]
                 };
             }
-            
+
             Array.Sort(_items, (item, item1) => item1.ProfitPerWeight.CompareTo(item.ProfitPerWeight));
+
+            // if (levels > _items.Length) levels = _itmes.Length;
+            // rq.WaitTime = 10000;
+            // rq.MaxThreadCreated = 4;
+            // gen (0, capacity, 0, net BitSet());
+            // rq.terminate();
         }
 
         private void DepthFirstSearch(BitArray search, int i, int rw, int p)
@@ -108,16 +116,16 @@ namespace HighPerformanceTests.sacks
     }
 
     [TestClass]
-    public class TestKnapsack1
+    public class TestKnapsack2
     {
         private readonly Random _random = new Random();
 
         [TestMethod]
-        public void Knapsack1Test()
+        public void Knapsack2Test()
         {
             const int num = 20;
             const int max = 100;
-            const int capacity = (int)(num * (max / 2.0) * 0.7);
+            const int capacity = (int)(num * (max / 2.0) * 0.5);
 
             var p = new int[num];
             var w = new int[num];
@@ -140,7 +148,7 @@ namespace HighPerformanceTests.sacks
             Console.WriteLine($"Capacity {capacity}");
             Console.WriteLine();
 
-            var ks = new Knapsack1(w, p, capacity);
+            var ks = new Knapsack2(w, p, capacity);
             ks.Solve();
 
             var selected = ks.Selected;
