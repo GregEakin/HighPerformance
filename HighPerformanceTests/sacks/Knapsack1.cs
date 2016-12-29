@@ -17,9 +17,9 @@ namespace HighPerformanceTests.sacks
 
         private readonly Item[] _items;
 
-        private BitArray _selected;
+        private readonly int _capacity;
 
-        private int _capacity;
+        private BitArray _selected;
 
         private float _bestProfit;
 
@@ -54,10 +54,10 @@ namespace HighPerformanceTests.sacks
         public Knapsack1(int[] weights, int[] profits, int capacity)
         {
             if (weights.Length != profits.Length)
-                throw new Exception("0/1 Knapsack: differing numbers of weights and profits");
+                throw new ArgumentException("0/1 Knapsack: differing numbers of weights and profits");
 
             if (capacity <= 0)
-                throw new Exception("0/1 Knapsack: capacity<=0");
+                throw new ArgumentException("0/1 Knapsack: capacity <= 0", nameof(capacity));
 
             _capacity = capacity;
             _items = new Item[weights.Length];
@@ -71,16 +71,8 @@ namespace HighPerformanceTests.sacks
                     ProfitPerWeight = ((float)profits[i]) / weights[i]
                 };
             }
-
-            for (var j = 1; j < _items.Length; j++)
-            {
-                for (var i = j; i > 0 && _items[i].ProfitPerWeight > _items[i - 1].ProfitPerWeight; i--)
-                {
-                    var tmp = _items[i];
-                    _items[i] = _items[i - 1];
-                    _items[i - 1] = tmp;
-                }
-            }
+            
+            Array.Sort(_items, (item, item1) => item1.ProfitPerWeight.CompareTo(item.ProfitPerWeight));
         }
 
         private void DepthFirstSearch(BitArray search, int i, int rw, int p)
@@ -88,6 +80,7 @@ namespace HighPerformanceTests.sacks
             if (i >= _items.Length)
             {
                 if (p <= _bestProfit) return;
+
                 _bestProfit = p;
                 _selected = new BitArray(search);
                 Console.WriteLine($"new best: {p}");
