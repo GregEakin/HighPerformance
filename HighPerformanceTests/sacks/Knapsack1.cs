@@ -11,8 +11,8 @@ namespace HighPerformanceTests.sacks
     {
         public struct Item
         {
-            public int profit, weight, pos;
-            public float profitPerWeight;
+            public int Profit, Weight, Position;
+            public float ProfitPerWeight;
         }
 
         private readonly Item[] _items;
@@ -36,7 +36,7 @@ namespace HighPerformanceTests.sacks
                 for (var i = 0; i < _items.Length; i++)
                 {
                     if (_selected.Get(i))
-                        s.Set(_items[i].pos, true);
+                        s.Set(_items[i].Position, true);
                 }
                 return s;
             }
@@ -55,85 +55,62 @@ namespace HighPerformanceTests.sacks
         {
             if (weights.Length != profits.Length)
                 throw new Exception("0/1 Knapsack: differing numbers of weights and profits");
+
             if (capacity <= 0)
                 throw new Exception("0/1 Knapsack: capacity<=0");
+
+            _capacity = capacity;
             _items = new Item[weights.Length];
             for (var i = 0; i < _items.Length; i++)
             {
                 _items[i] = new Item()
                 {
-                    profit = profits[i],
-                    weight = weights[i],
-                    pos = i,
-                    profitPerWeight = ((float)profits[i]) / weights[i]
+                    Profit = profits[i],
+                    Weight = weights[i],
+                    Position = i,
+                    ProfitPerWeight = ((float)profits[i]) / weights[i]
                 };
             }
 
             for (var j = 1; j < _items.Length; j++)
             {
-                for (var i = j; i > 0 && _items[i].profitPerWeight > _items[i - 1].profitPerWeight; i--)
+                for (var i = j; i > 0 && _items[i].ProfitPerWeight > _items[i - 1].ProfitPerWeight; i--)
                 {
                     var tmp = _items[i];
                     _items[i] = _items[i - 1];
                     _items[i - 1] = tmp;
                 }
             }
-
-            // new Thread(new Search(0, capacity, 0, new BitArray(_items.Length) /*, tg*/)).Start();
-            var search = new Search(0, capacity, 0, new BitArray(_items.Length));
-            DepthFirstSearch(search, search.from, search.startWeight, search.startProfit);
         }
 
-        public class Search // implements Runnable
-        {
-            public readonly BitArray selected;
-
-            public readonly int from;
-
-            public readonly int startWeight;
-
-            public readonly int startProfit;
-
-            // SharedTerminationGroup tg;
-
-            public Search(int from, int remainingWeight, int profit, BitArray selected /*, SharedTerminationGroup tg*/)
-            {
-                this.from = from;
-                startWeight = remainingWeight;
-                startProfit = profit;
-                this.selected = selected;
-                // this.tg = tg;
-            }
-        }
-
-        void DepthFirstSearch(Search search, int i, int rw, int p)
+        private void DepthFirstSearch(BitArray search, int i, int rw, int p)
         {
             if (i >= _items.Length)
             {
                 if (p <= _bestProfit) return;
                 _bestProfit = p;
-                _selected = new BitArray(search.selected);
+                _selected = new BitArray(search);
                 Console.WriteLine($"new best: {p}");
                 return;
             }
 
-            if (p + rw * _items[i].profitPerWeight < _bestProfit)
+            if (p + rw * _items[i].ProfitPerWeight < _bestProfit)
                 return;
 
-            if (rw - _items[i].weight >= 0)
+            if (rw - _items[i].Weight >= 0)
             {
-                search.selected.Set(i, true);
-                DepthFirstSearch(search, i + 1, rw - _items[i].weight, p + _items[i].profit);
+                search.Set(i, true);
+                DepthFirstSearch(search, i + 1, rw - _items[i].Weight, p + _items[i].Profit);
             }
 
-            search.selected.Set(i, false);
+            search.Set(i, false);
             DepthFirstSearch(search, i + 1, rw, p);
         }
 
         public void Run()
         {
-            // dfs(from, startWeight, startProfit);
-            // tg.terminate();
+            // new Thread(new Search(0, capacity, 0, new BitArray(_items.Length) /*, tg*/)).Start();
+            DepthFirstSearch(new BitArray(_items.Length), 0, _capacity, 0);
         }
     }
 
@@ -148,6 +125,7 @@ namespace HighPerformanceTests.sacks
             const int num = 20;
             const int max = 100;
             const int capacity = (int)(num * (max / 2.0) * 0.7);
+
             var p = new int[num];
             var w = new int[num];
             for (var i = p.Length - 1; i >= 0; i--)
@@ -155,6 +133,7 @@ namespace HighPerformanceTests.sacks
                 p[i] = 1 + _random.Next(max - 1);
                 w[i] = 1 + _random.Next(max - 1);
             }
+
             Console.Write("p:");
             for (var i = p.Length - 1; i >= 0; i--)
                 Console.Write($" {p[i]}");
@@ -166,10 +145,11 @@ namespace HighPerformanceTests.sacks
             Console.WriteLine();
 
             var ks = new Knapsack1(w, p, capacity);
-            var s = ks.Selected;
+            ks.Run();
+
             Console.Write("s:");
             for (var i = p.Length - 1; i >= 0; i--)
-                Console.Write($" {(s.Get(i) ? '1' : '0')} ");
+                Console.Write($" {(ks.Selected.Get(i) ? '1' : '0')} ");
             Console.WriteLine();
 
             Console.WriteLine($"Profit: {ks.Profit}");
