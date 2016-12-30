@@ -19,7 +19,7 @@ namespace HighPerformanceTests.sacks
 
         private readonly int _capacity;
 
-        private BitArray _selected;
+        private volatile BitArray _selected;
 
         private volatile float _bestProfit;
 
@@ -35,10 +35,7 @@ namespace HighPerformanceTests.sacks
                 // rq.MaxThreadsWaiting = 0;
                 var s = new BitArray(_items.Length);
                 for (var i = 0; i < _items.Length; i++)
-                {
-                    if (_selected.Get(i))
-                        s.Set(_items[i].Position, true);
-                }
+                    s.Set(_items[i].Position, _selected.Get(i));
                 return s;
             }
         }
@@ -110,6 +107,9 @@ namespace HighPerformanceTests.sacks
 
         public void Solve()
         {
+            _bestProfit = 0.0f;
+            _selected = null;
+
             // new Thread(new Search(0, capacity, 0, new BitArray(_items.Length) /*, tg*/)).Start();
             DepthFirstSearch(new BitArray(_items.Length), 0, _capacity, 0);
         }

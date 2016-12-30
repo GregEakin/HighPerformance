@@ -23,33 +23,18 @@ namespace HighPerformanceTests.sacks
 
         private float _bestProfit;
 
-        // Future done = new Future();
-
-        // SharedTerminationGroup tg = new SharedTerminationGroup(done);
-
-        public BitArray Selected // throws InterruptedException
+        public BitArray Selected
         {
             get
             {
-                // done.getValue();
                 var s = new BitArray(_items.Length);
                 for (var i = 0; i < _items.Length; i++)
-                {
-                    if (_selected.Get(i))
-                        s.Set(_items[i].Position, true);
-                }
+                    s.Set(_items[i].Position, _selected.Get(i));
                 return s;
             }
         }
 
-        public int Profit // throws InterruptedException
-        {
-            get
-            {
-                // done.getValue();
-                return (int)_bestProfit;
-            }
-        }
+        public int Profit => (int)_bestProfit;
 
         public Knapsack1(int[] weights, int[] profits, int capacity)
         {
@@ -71,7 +56,7 @@ namespace HighPerformanceTests.sacks
                     ProfitPerWeight = ((float)profits[i]) / weights[i]
                 };
             }
-            
+
             Array.Sort(_items, (item, item1) => item1.ProfitPerWeight.CompareTo(item.ProfitPerWeight));
         }
 
@@ -102,7 +87,8 @@ namespace HighPerformanceTests.sacks
 
         public void Solve()
         {
-            // new Thread(new Search(0, capacity, 0, new BitArray(_items.Length) /*, tg*/)).Start();
+            _bestProfit = 0.0f;
+            _selected = null;
             DepthFirstSearch(new BitArray(_items.Length), 0, _capacity, 0);
         }
     }
