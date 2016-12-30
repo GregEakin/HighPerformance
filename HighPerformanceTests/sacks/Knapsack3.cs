@@ -4,6 +4,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HighPerformanceTests.sacks
 {
@@ -23,16 +26,10 @@ namespace HighPerformanceTests.sacks
 
         private volatile float _bestProfit;
 
-        // Future done = new Future();
-
-        // SharedTerminationGroup tg = new SharedTerminationGroup(done);
-
-        public BitArray Selected // throws InterruptedException
+        public BitArray Selected
         {
             get
             {
-                // done.Value;
-                // rq.MaxThreadsWaiting = 0;
                 var s = new BitArray(_items.Length);
                 for (var i = 0; i < _items.Length; i++)
                     s.Set(_items[i].Position, _selected.Get(i));
@@ -40,15 +37,7 @@ namespace HighPerformanceTests.sacks
             }
         }
 
-        public int Profit // throws InterruptedException
-        {
-            get
-            {
-                // done.getValue();
-                // rq.MaxThreadsWaiting = 0;
-                return (int)_bestProfit;
-            }
-        }
+        public int Profit => (int)_bestProfit;
 
         public Knapsack3(int[] weights, int[] profits, int capacity)
         {
@@ -72,12 +61,55 @@ namespace HighPerformanceTests.sacks
             }
 
             Array.Sort(_items, (item, item1) => item1.ProfitPerWeight.CompareTo(item.ProfitPerWeight));
+        }
 
-            // if (levels > _items.Length) levels = _itmes.Length;
-            // rq.WaitTime = 10000;
-            // rq.MaxThreadCreated = 4;
-            // gen (0, capacity, 0, net BitSet());
-            // rq.terminate();
+        //public static async Task<IEnumerable<T>> TraverseAsync<T>(this IEnumerable<T> source, Func<T, Task<IEnumerable<T>>> childSelector)
+        //{
+        //    var results = new ConcurrentBag<T>();
+        //    Func<T, Task> foo = null;
+        //    foo = async next =>
+        //    {
+        //        results.Add(next);
+        //        var children = await childSelector(next);
+        //        await Task.WhenAll(children.Select(child => foo(child)));
+        //    };
+        //    await Task<>.WhenAll(source.Select(child => foo(child)));
+        //    return results;
+        //}
+
+        public class Node
+        {
+            public bool Visited { get; set; }
+
+            public Dictionary<Node, int> Children { get; }
+        }
+
+        public static int PBFS(Node start, Node end)
+        {
+            var queue = new ConcurrentQueue<Node>();
+            queue.Enqueue(start);
+            var isFinished = false;
+            while (queue.Count > 0 && !isFinished)
+            {
+                Parallel.ForEach<Node>(queue, currentNode =>
+                {
+                    if (!queue.TryDequeue(out currentNode)) return;
+                    foreach (var child in currentNode.Children.Keys)
+                    {
+                        if (!child.Visited)
+                        {
+                            child.Visited = true;
+                            if (child == end)
+                            {
+                                isFinished = true;
+                                return;
+                            }
+                        }
+                        queue.Enqueue(child);
+                    }
+                });
+            }
+            return 1;
         }
 
         private void DepthFirstSearch(BitArray search, int i, int rw, int p)
@@ -110,7 +142,6 @@ namespace HighPerformanceTests.sacks
             _bestProfit = 0.0f;
             _selected = null;
 
-            // new Thread(new Search(0, capacity, 0, new BitArray(_items.Length) /*, tg*/)).Start();
             DepthFirstSearch(new BitArray(_items.Length), 0, _capacity, 0);
         }
     }

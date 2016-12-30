@@ -4,6 +4,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HighPerformanceTests.sacks
 {
@@ -86,8 +88,11 @@ namespace HighPerformanceTests.sacks
             {
                 if (p <= _bestProfit) return;
 
-                _bestProfit = p;
-                _selected = new BitArray(search);
+                lock (this)
+                {
+                    _bestProfit = p;
+                    _selected = new BitArray(search);
+                }
                 Console.WriteLine($"new best: {p}");
                 return;
             }
@@ -95,23 +100,35 @@ namespace HighPerformanceTests.sacks
             if (p + rw * _items[i].ProfitPerWeight < _bestProfit)
                 return;
 
+
+            search.Set(i, false);
+            var task2 = new Task(() => DepthFirstSearch(search, i + 1, rw, p));
+            task2.Start();
+
             if (rw - _items[i].Weight >= 0)
             {
                 search.Set(i, true);
-                DepthFirstSearch(search, i + 1, rw - _items[i].Weight, p + _items[i].Profit);
+                var task1 = new Task(() => DepthFirstSearch(search, i + 1, rw - _items[i].Weight, p + _items[i].Profit));
+                task1.Start();
+                task1.Wait();
+                task1.Dispose();
             }
-
-            search.Set(i, false);
-            DepthFirstSearch(search, i + 1, rw, p);
+            task2.Wait();
+            task2.Dispose();
         }
 
         public void Solve()
         {
-            _bestProfit = 0.0f;
-            _selected = null;
+            lock (this)
+            {
+                _bestProfit = 0.0f;
+                _selected = null;
+            }
 
-            // new Thread(new Search(0, capacity, 0, new BitArray(_items.Length) /*, tg*/)).Start();
-            DepthFirstSearch(new BitArray(_items.Length), 0, _capacity, 0);
+            var task = new Task(() => DepthFirstSearch(new BitArray(_items.Length), 0, _capacity, 0));
+            task.Start();
+            task.Wait();
+            task.Dispose();
         }
     }
 
