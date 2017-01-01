@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections;
 
-namespace HighPerformanceTests.sacks
+namespace HighPerformanceTests.Sacks
 {
     public class Knapsack1
     {

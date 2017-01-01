@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.dotMemoryUnit.2.3.20160517.113140\lib\dotMemory.Unit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.0.5-preview\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -48,16 +51,27 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="sacks\Knapsack1.cs" />
-    <Compile Include="sacks\Knapsack5.cs" />
-    <Compile Include="sacks\Knapsack4.cs" />
-    <Compile Include="sacks\Knapsack3.cs" />
-    <Compile Include="sacks\Knapsack2.cs" />
+    <Compile Include="Message\MessageClientTests.cs" />
+    <Compile Include="Message\MessageServerDispatcherTests.cs" />
+    <Compile Include="Message\MessageServerTests.cs" />
+    <Compile Include="Message\MessageTests.cs" />
+    <Compile Include="Progress\ProgressReportingTests.cs" />
+    <Compile Include="Sacks\Knapsack1.cs" />
+    <Compile Include="Sacks\Knapsack5.cs" />
+    <Compile Include="Sacks\Knapsack4.cs" />
+    <Compile Include="Sacks\Knapsack3.cs" />
+    <Compile Include="Sacks\Knapsack2.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HighPerformeance\HighPerformeance.csproj">
+      <Project>{b8b369b0-23ba-4b15-8afd-e87730377940}</Project>
+      <Name>HighPerformeance</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

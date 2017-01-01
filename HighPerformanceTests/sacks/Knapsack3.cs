@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace HighPerformanceTests.sacks
+namespace HighPerformanceTests.Sacks
 {
     public class Knapsack3
     {
