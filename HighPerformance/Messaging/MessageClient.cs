@@ -9,11 +9,10 @@ namespace HighPerformance.Messaging
 {
     public class MessageClient : IDisposable
     {
+        private readonly TcpClient _client;
         private readonly NetworkStream _networkStream;
         private readonly StreamWriter _writer;
         private readonly StreamReader _reader;
-
-        private readonly TcpClient _client;
 
         public MessageClient(string host, int port)
         {
@@ -48,9 +47,11 @@ namespace HighPerformance.Messaging
 
         public async Task<Message> DisconnectAsync()
         {
-            var message = new Message {Type = 0};
-            message.Type = 0;
-            message["disconnect"] = "EOL";
+            var message = new Message
+            {
+                Type = 0,
+                ["disconnect"] = "EOL"
+            };
             var response = await SendAsync(message);
             return response;
         }

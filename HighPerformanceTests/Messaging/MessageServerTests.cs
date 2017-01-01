@@ -17,6 +17,7 @@ namespace HighPerformanceTests.Messaging
             }
         }
 
+        [Ignore]
         [TestMethod]
         public void Test1()
         {
@@ -49,8 +50,9 @@ namespace HighPerformanceTests.Messaging
         public void AddressTest()
         {
             var address = MessageServer.Address;
-            Assert.AreEqual(192, address.GetAddressBytes()[0]);
-            Assert.AreEqual(168, address.GetAddressBytes()[1]);
+            Assert.AreEqual<byte>(192, address.GetAddressBytes()[0]);
+            Assert.AreEqual<byte>(168, address.GetAddressBytes()[1]);
+            Assert.AreEqual<byte>(42, address.GetAddressBytes()[2]);
         }
     }
 }
