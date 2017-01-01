@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Messaging\IDeliverable.cs" />
     <Compile Include="Messaging\Message.cs" />
     <Compile Include="Messaging\MessageClient.cs" />

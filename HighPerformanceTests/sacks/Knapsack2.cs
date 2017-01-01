@@ -4,7 +4,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace HighPerformanceTests.Sacks

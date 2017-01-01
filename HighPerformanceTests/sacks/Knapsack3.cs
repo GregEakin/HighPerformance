@@ -91,7 +91,7 @@ namespace HighPerformanceTests.Sacks
             var isFinished = false;
             while (queue.Count > 0 && !isFinished)
             {
-                Parallel.ForEach<Node>(queue, currentNode =>
+                Parallel.ForEach(queue, currentNode =>
                 {
                     if (!queue.TryDequeue(out currentNode)) return;
                     foreach (var child in currentNode.Children.Keys)

@@ -9,7 +9,7 @@ namespace HighPerformanceTests.Messaging
     [TestClass]
     public class MessageServerTests
     {
-        class Server1 : IDeliverable
+        private class Server1 : IDeliverable
         {
             public Message Send(Message m)
             {

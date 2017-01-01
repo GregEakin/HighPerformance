@@ -61,7 +61,6 @@
     <Compile Include="Sacks\Knapsack4.cs" />
     <Compile Include="Sacks\Knapsack3.cs" />
     <Compile Include="Sacks\Knapsack2.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
