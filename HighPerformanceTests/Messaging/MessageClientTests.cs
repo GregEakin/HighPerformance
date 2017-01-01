@@ -1,7 +1,8 @@
 ﻿using System;
+using HighPerformance.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HighPerformanceTests.Message
+namespace HighPerformanceTests.Messaging
 {
     [TestClass]
     public class MessageClientTests

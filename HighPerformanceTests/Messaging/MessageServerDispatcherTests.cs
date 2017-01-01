@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HighPerformanceTests.Message
+namespace HighPerformanceTests.Messaging
 {
     [TestClass]
     public class MessageServerDispatcherTests

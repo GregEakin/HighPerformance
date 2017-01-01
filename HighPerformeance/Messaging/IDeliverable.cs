@@ -1,4 +1,4 @@
-﻿namespace HighPerformanceTests.Message
+﻿namespace HighPerformance.Messaging
 {
     public interface IDeliverable
     {

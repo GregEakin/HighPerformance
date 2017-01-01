@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HighPerformanceTests.Message
+namespace HighPerformance.Messaging
 {
     public class Message
     {

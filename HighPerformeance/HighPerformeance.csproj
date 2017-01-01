@@ -41,11 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="Message\IDeliverable.cs" />
-    <Compile Include="Message\Message.cs" />
-    <Compile Include="Message\MessageClient.cs" />
-    <Compile Include="Message\MessageServer.cs" />
-    <Compile Include="Message\MessageServerDispatcher.cs" />
+    <Compile Include="Messaging\IDeliverable.cs" />
+    <Compile Include="Messaging\Message.cs" />
+    <Compile Include="Messaging\MessageClient.cs" />
+    <Compile Include="Messaging\MessageServer.cs" />
+    <Compile Include="Messaging\MessageServerDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

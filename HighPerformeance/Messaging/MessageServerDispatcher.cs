@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HighPerformanceTests.Message
+namespace HighPerformance.Messaging
 {
     public class MessageServerDispatcher : IDisposable
     {
@@ -38,7 +38,8 @@ namespace HighPerformanceTests.Message
         {
             while (!_cancellationToken.IsCancellationRequested)
             {
-                var request = await _reader.ReadLineAsync();
+                var request = await Task.Run(() => _reader.ReadLineAsync(), _cancellationToken);
+                // var request = await _reader.ReadLineAsync();
                 if (request != null)
                 {
                     Console.WriteLine("Received service request: " + request);
@@ -51,7 +52,7 @@ namespace HighPerformanceTests.Message
                         var ack = new Message();
                         var mm = ack.Encode();
                         await _writer.WriteLineAsync(mm);
-                        return;
+                        break;
                     }
 
                     var deliverable = _server.GetSubscriber(message.Type);

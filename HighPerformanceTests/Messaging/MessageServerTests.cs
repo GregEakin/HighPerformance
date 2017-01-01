@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
+using HighPerformance.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HighPerformanceTests.Message
+namespace HighPerformanceTests.Messaging
 {
     [TestClass]
     public class MessageServerTests
@@ -25,21 +27,22 @@ namespace HighPerformanceTests.Message
             var runner = server.RunAsync();
 
             var host = MessageServer.Address.ToString();
-            using (var client = new MessageClient(host, 6000))
-            {
-                var msg = new Message {Type = 0x01};
-                var response = client.CallAsync(msg);
-                var data = response.Result;
-                Console.WriteLine(data);
+            var client = new MessageClient(host, 6000);
 
-                var disconnect = client.DisconnectAsync();
-                var x = disconnect.Result;
-            }
+            var msg = new Message {Type = 0x01};
+            var response = client.SendAsync(msg);
+            var data = response.Result;
+            Console.WriteLine($"Send: {data}");
+
+            var disconnect = client.DisconnectAsync();
+            var x = disconnect.Result;
+            Console.WriteLine($"disconnect: {x}");
+
+            var delay = Task.Delay(500, cancellationTokenSource.Token);
+            delay.Wait();
 
             cancellationTokenSource.Cancel();
             runner.Wait();
-
-            runner.Dispose();
         }
 
         [TestMethod]

@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace HighPerformanceTests.Message
+namespace HighPerformance.Messaging
 {
     public class MessageClient : IDisposable
     {
@@ -28,7 +28,7 @@ namespace HighPerformanceTests.Message
             _writer.AutoFlush = true;
         }
 
-        public async Task<Message> CallAsync(Message message)
+        public async Task<Message> SendAsync(Message message)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace HighPerformanceTests.Message
             var message = new Message {Type = 0};
             message.Type = 0;
             message["disconnect"] = "EOL";
-            var response = await CallAsync(message);
+            var response = await SendAsync(message);
             return response;
         }
 

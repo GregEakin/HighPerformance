@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HighPerformanceTests.Message
+namespace HighPerformance.Messaging
 {
     public class MessageServer
     {
@@ -39,18 +39,20 @@ namespace HighPerformanceTests.Message
             var dispatchers = new List<MessageServerDispatcher>();
             _listener.Start();
 
-            while (!_cancellationToken.IsCancellationRequested)
+            try
             {
-                try
+                while (!_cancellationToken.IsCancellationRequested)
                 {
-                    var tcpClient = await _listener.AcceptTcpClientAsync();
+                    var tcpClient = await Task.Run(() => _listener.AcceptTcpClientAsync(), _cancellationToken);
+                    //var tcpClient = await _listener.AcceptTcpClientAsync();
                     var msd = new MessageServerDispatcher(this, tcpClient, _cancellationToken);
                     dispatchers.Add(msd);
+                    await msd.RunAsync();
                 }
-                catch (Exception)
-                {
-                    break;
-                }
+            }
+            finally
+            {
+                _listener.Stop();
             }
 
             foreach (var messageServerDispatcher in dispatchers)

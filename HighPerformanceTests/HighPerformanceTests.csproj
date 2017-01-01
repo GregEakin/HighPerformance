@@ -51,10 +51,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Message\MessageClientTests.cs" />
-    <Compile Include="Message\MessageServerDispatcherTests.cs" />
-    <Compile Include="Message\MessageServerTests.cs" />
-    <Compile Include="Message\MessageTests.cs" />
+    <Compile Include="Messaging\MessageClientTests.cs" />
+    <Compile Include="Messaging\MessageServerDispatcherTests.cs" />
+    <Compile Include="Messaging\MessageServerTests.cs" />
+    <Compile Include="Messaging\MessageTests.cs" />
     <Compile Include="Progress\ProgressReportingTests.cs" />
     <Compile Include="Sacks\Knapsack1.cs" />
     <Compile Include="Sacks\Knapsack5.cs" />
