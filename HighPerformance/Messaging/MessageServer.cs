@@ -38,16 +38,15 @@ namespace HighPerformance.Messaging
         {
             var dispatchers = new List<MessageServerDispatcher>();
             _listener.Start();
-
             try
             {
                 while (!_cancellationToken.IsCancellationRequested)
                 {
                     var tcpClient = await Task.Run(() => _listener.AcceptTcpClientAsync(), _cancellationToken);
                     //var tcpClient = await _listener.AcceptTcpClientAsync();
-                    var msd = new MessageServerDispatcher(this, tcpClient, _cancellationToken);
-                    dispatchers.Add(msd);
-                    await msd.RunAsync();
+                    var dispatcher = new MessageServerDispatcher(this, tcpClient, _cancellationToken);
+                    dispatchers.Add(dispatcher);
+                    await dispatcher.RunAsync();
                 }
             }
             finally
