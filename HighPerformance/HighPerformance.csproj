@@ -7,8 +7,8 @@
     <ProjectGuid>{B8B369B0-23BA-4B15-8AFD-E87730377940}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HighPerformeance</RootNamespace>
-    <AssemblyName>HighPerformeance</AssemblyName>
+    <RootNamespace>HighPerformance</RootNamespace>
+    <AssemblyName>HighPerformance</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

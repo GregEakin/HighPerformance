@@ -68,9 +68,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HighPerformeance\HighPerformeance.csproj">
+    <ProjectReference Include="..\HighPerformance\HighPerformance.csproj">
       <Project>{b8b369b0-23ba-4b15-8afd-e87730377940}</Project>
-      <Name>HighPerformeance</Name>
+      <Name>HighPerformance</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

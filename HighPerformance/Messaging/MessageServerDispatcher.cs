@@ -40,28 +40,26 @@ namespace HighPerformance.Messaging
             {
                 var request = await Task.Run(() => _reader.ReadLineAsync(), _cancellationToken);
                 // var request = await _reader.ReadLineAsync();
-                if (request != null)
-                {
-                    Console.WriteLine("Received service request: " + request);
-
-                    var message = new Message();
-                    message.Decode(request);
-
-                    if (message.Type == 0 && message["disconnect"] != null)
-                    {
-                        var ack = new Message();
-                        var mm = ack.Encode();
-                        await _writer.WriteLineAsync(mm);
-                        break;
-                    }
-
-                    var deliverable = _server.GetSubscriber(message.Type);
-                    var result = deliverable != null ? deliverable.Send(message) : new Message();
-                    var response = result.Encode();
-                    await _writer.WriteLineAsync(response);
-                }
-                else
+                if (request == null)
                     break;
+
+                Console.WriteLine("Received service request: " + request);
+
+                var message = new Message();
+                message.Decode(request);
+
+                if (message.Type == 0 && message["disconnect"] != null)
+                {
+                    var ack = new Message();
+                    var mm = ack.Encode();
+                    await _writer.WriteLineAsync(mm);
+                    break;
+                }
+
+                var deliverable = _server.GetSubscriber(message.Type);
+                var result = deliverable != null ? deliverable.Send(message) : new Message();
+                var response = result.Encode();
+                await _writer.WriteLineAsync(response);
             }
         }
     }
