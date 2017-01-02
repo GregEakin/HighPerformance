@@ -1,5 +1,5 @@
 ﻿// Greg Eakin
-// December 30, 2016
+// January 2, 2017
 
 using HighPerformance.Textbook.Chapter07;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
