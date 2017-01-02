@@ -40,14 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Memo\MemoClient.cs" />
-    <Compile Include="Memo\MemoGet.cs" />
-    <Compile Include="Memo\MemoGetCopy.cs" />
-    <Compile Include="Memo\MemoGetCopySkip.cs" />
-    <Compile Include="Memo\MemoMessage.cs" />
-    <Compile Include="Memo\MemoPut.cs" />
-    <Compile Include="Memo\MemoPutDelayed.cs" />
-    <Compile Include="Memo\MemoServer.cs" />
     <Compile Include="Messaging\IDeliverable.cs" />
     <Compile Include="Messaging\Message.cs" />
     <Compile Include="Messaging\MessageClient.cs" />
