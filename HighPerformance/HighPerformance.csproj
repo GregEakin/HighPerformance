@@ -54,6 +54,8 @@
     <Compile Include="Messaging\MessageServer.cs" />
     <Compile Include="Messaging\MessageServerDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Textbook\Chapter07\BinAddFloatArayTask.cs" />
+    <Compile Include="Textbook\Chapter07\BinAddFloatArrayLazy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
