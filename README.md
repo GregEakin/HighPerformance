@@ -21,7 +21,7 @@ This is a C# implemenmtation of the `Takk<T>` to generate dataflow graphs. It wa
 ## Sample code
 Here's a [two-operand task](HighPerformance/Textbook/Chapter07/BinAddFloatArrayLazy.cs) that evaluates the sum of the array, when the Result is called. 
 The value is only calculated once, and only on demand. If the Result is never called, the result memory is not allocated and sum operation never occurs.
-[Look here, at line 34](HighPerformanceTests/Textbook/Chapter07Tests/BinAddFloatArrayLazyTests.cs), for an example of how it's used.
+[Look here, at line 32](HighPerformanceTests/Textbook/Chapter07Tests/BinAddFloatArrayLazyTests.cs), for an example of how it's used.
 ```C#
 public class BinAddFloatArrayLazy
 {
