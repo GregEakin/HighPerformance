@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Greg Eakin
+// January 2, 2017
+
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;

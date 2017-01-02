@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Greg Eakin
+// December 30, 2016
+
+using System;
 using HighPerformance.Textbook.Chapter07;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

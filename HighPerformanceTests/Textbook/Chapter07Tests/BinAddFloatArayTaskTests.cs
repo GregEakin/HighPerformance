@@ -1,4 +1,7 @@
-﻿using HighPerformance.Textbook.Chapter07;
+﻿// Greg Eakin
+// December 30, 2016
+
+using HighPerformance.Textbook.Chapter07;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading;
 using System.Threading.Tasks;
