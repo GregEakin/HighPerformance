@@ -16,7 +16,7 @@ namespace HighPerformanceTests.Textbook.Chapter07Tests
             data[0, 1] = true;
             data[1, 2] = true;
             
-            WarshallBlocking.WarshallAlgorithm(data);
+            WarshallBlocking.Closure(data);
 
             Assert.IsTrue(data[0,2]);
         }

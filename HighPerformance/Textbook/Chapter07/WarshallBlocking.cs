@@ -11,7 +11,7 @@ namespace HighPerformance.Textbook.Chapter07
         /// Inspaired by Example 7-17 Warshall's algorithm
         /// </summary>
         /// <param name="data">The 2-d array of paths through the graph to be reduced.</param>
-        public static void WarshallAlgorithm(bool[,] data)
+        public static void Closure(bool[,] data)
         {
             var size = data.GetLength(0);
             if (size != data.GetLength(1))
