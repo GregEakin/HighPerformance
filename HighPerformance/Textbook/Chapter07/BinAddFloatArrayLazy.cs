@@ -41,7 +41,7 @@ namespace HighPerformance.Textbook.Chapter07
 
         public Lazy<float[]> Result { get; }
 
-        public float[] Run()
+        private float[] Run()
         {
             var left = _left.Value;
             var right = _right.Value;
