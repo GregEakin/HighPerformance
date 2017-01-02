@@ -57,7 +57,6 @@
     <Compile Include="Messaging\MessageTests.cs" />
     <Compile Include="Progress\ProgressReportingTests.cs" />
     <Compile Include="Sacks\Knapsack1.cs" />
-    <Compile Include="Sacks\Knapsack5.cs" />
     <Compile Include="Sacks\Knapsack4.cs" />
     <Compile Include="Sacks\Knapsack3.cs" />
     <Compile Include="Sacks\Knapsack2.cs" />
