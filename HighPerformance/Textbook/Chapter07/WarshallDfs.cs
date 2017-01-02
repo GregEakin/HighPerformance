@@ -1,0 +1,100 @@
+﻿// Greg Eakin
+// January 2, 2017
+
+using System;
+using System.Threading.Tasks;
+
+namespace HighPerformance.Textbook.Chapter07
+{
+    /// <summary>
+    /// Inspaired by Example 7-17 Warshall's algorithm
+    /// </summary>
+    public class WarshallDfs
+    {
+        private sealed class RowUpdate
+        {
+            private readonly int _k;
+            private readonly RowUpdate _myRow;
+            private readonly RowUpdate _kthRow;
+            private readonly Task<bool[]> _task;
+
+            public RowUpdate(bool[] v)
+            {
+                _task = Task.FromResult(v);
+            }
+
+            public RowUpdate(RowUpdate myRow, RowUpdate kthRow, int k)
+            {
+                _myRow = myRow;
+                _kthRow = kthRow;
+                _k = k;
+                _task = new Task<bool[]>(ComputeSum);
+                myRow._task.ContinueWith(StartTask);
+                kthRow._task.ContinueWith(StartTask);
+            }
+
+            public bool[] Value => _task.Result;
+
+            private void StartTask(Task<bool[]> task)
+            {
+                if (!_myRow._task.IsCompleted)
+                    return;
+
+                var row = _myRow.Value;
+                if (!row[_k])
+                    _task.Start();
+
+                if (!_kthRow._task.IsCompleted)
+                    return;
+
+                _task.Start();
+            }
+
+            private bool[] ComputeSum()
+            {
+                var row = _myRow.Value;
+                if (!row[_k])
+                    return row;
+
+                var rowK = _kthRow.Value;
+                var result = new bool[rowK.Length];
+                for (var j = 0; j < rowK.Length; j++)
+                    result[j] = row[j] || rowK[j];
+
+                return result;
+            }
+        }
+
+        public static bool[][] Closure(bool[][] data)
+        {
+            var size = data.Length;
+            for (var i = 0; i < size; i++)
+                if (size != data[i].Length)
+                    throw new ArgumentException(nameof(data));
+
+            var sourceRows = new RowUpdate[size];
+            for (var i = 0; i < size; i++)
+                sourceRows[i] = new RowUpdate(data[i]);
+
+            for (var k = 0; k < size; k++)
+            {
+                var destRows = new RowUpdate[size];
+                for (var i = 0; i < size; i++)
+                {
+                    destRows[i] = i == k
+                        ? sourceRows[i]
+                        : new RowUpdate(sourceRows[i], sourceRows[k], k);
+                }
+
+                sourceRows = destRows;
+            }
+
+            var result = new bool[size][];
+            for (var i = 0; i < size; i++)
+                result[i] = sourceRows[i].Value;
+
+            // wait for all to finish.
+            return result;
+        }
+    }
+}

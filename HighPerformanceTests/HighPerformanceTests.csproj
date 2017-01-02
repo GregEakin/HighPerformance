@@ -65,6 +65,7 @@
     <Compile Include="Textbook\Chapter07Tests\BinAddFloatArayTaskTests.cs" />
     <Compile Include="Textbook\Chapter07Tests\BinAddFloatArrayLazyTests.cs" />
     <Compile Include="Textbook\Chapter07Tests\WarshallBlockingTest.cs" />
+    <Compile Include="Textbook\Chapter07Tests\WarshallDfsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

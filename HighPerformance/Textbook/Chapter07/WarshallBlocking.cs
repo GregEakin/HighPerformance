@@ -23,6 +23,5 @@ namespace HighPerformance.Textbook.Chapter07
                         for (var j = 0; j < size; j++)
                             data[i, j] = data[i, j] || data[k, j];
         }
-
     }
 }
