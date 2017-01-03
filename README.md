@@ -5,7 +5,7 @@ This is a C# implemenmtation of the `Takk<T>` to generate dataflow graphs. It wa
 ## From the book:
 [![High Performance Java Computing: Multithreaded and Networked Programming](book.jpg)](http://www.oracle.com/technetwork/java/performance2-139813.html)
 >Christopher, Thomas W., and George Thiruvathukal. 
->*High Performance Java Computing: Multi-threaded and Networked Programming*. 
+>*High Performance Java Computing: Multithreaded and Networked Programming*. 
 >Hemel Hempstead: Prentice Hall, 2000. Print.
 
 ## Features:

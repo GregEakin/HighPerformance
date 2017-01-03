@@ -21,7 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HighPerformanceTests.Textbook.Chapter07Tests
 {
     [TestClass]
-    public class WarshallDfsTests
+    public class WarshallC1Tests
     {
         [TestMethod]
         public void Test1()
@@ -33,7 +33,7 @@ namespace HighPerformanceTests.Textbook.Chapter07Tests
             data[0][1] = true;
             data[1][2] = true;
 
-           var result = WarshallDfs.Closure(data);
+            var result = WarshallC1.Closure(data);
 
             Assert.IsTrue(result[0][2]);
         }

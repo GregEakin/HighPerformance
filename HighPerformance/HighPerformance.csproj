@@ -49,6 +49,7 @@
     <Compile Include="Textbook\Chapter07\BinAddFloatArayTask.cs" />
     <Compile Include="Textbook\Chapter07\BinAddFloatArrayLazy.cs" />
     <Compile Include="Textbook\Chapter07\WarshallBlocking.cs" />
+    <Compile Include="Textbook\Chapter07\WarshallC1.cs" />
     <Compile Include="Textbook\Chapter07\WarshallDfs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
