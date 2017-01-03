@@ -59,7 +59,7 @@ namespace HighPerformance.Textbook.Chapter07
 
                 var row = _myRow.Value;
                 if (!row[_k])
-                    _task.Start();
+                    _task.RunSynchronously();
 
                 if (!_kthRow._task.IsCompleted)
                     return;
