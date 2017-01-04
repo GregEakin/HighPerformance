@@ -37,5 +37,23 @@ namespace HighPerformanceTests.Textbook.Chapter07Tests
 
             Assert.IsTrue(result[0][2]);
         }
+
+        [TestMethod]
+        public void DiagonalTest()
+        {
+            const int size = 33;
+            var data = new bool[size][];
+            for (var i = 0; i < size; i++)
+                data[i] = new bool[size];
+
+            for (var i = 0; i < size; i++)
+                data[i][(i + 1) % size] = true;
+
+            var result = WarshallC1.Closure(data);
+
+            for (var i = 0; i < size; i++)
+                for (var j = 0; j < size; j++)
+                    Assert.IsTrue(result[i][j]);
+        }
     }
 }
