@@ -31,6 +31,8 @@ namespace HighPerformance.Textbook.Chapter03
 
         public byte[] BufferData { get; private set; }
 
+        public int Offset { get; set; }
+
         public int Length
         {
             get { return _size; }

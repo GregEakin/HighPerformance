@@ -44,8 +44,9 @@ namespace HighPerformance.Textbook.Chapter03
                 {
                     buffer = _pool.Use();
                     bytesRead = _reader.Read(buffer.BufferData, index, buffer.Length);
-                    index += bytesRead;
+                    buffer.Offset = index;
                     buffer.Length = bytesRead;
+                    index += bytesRead;
                 }
                 catch (Exception)
                 {

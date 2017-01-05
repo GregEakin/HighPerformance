@@ -42,9 +42,7 @@ namespace HighPerformance.Textbook.Chapter03
                 {
                     if (buffer.Length <= 0)
                         break;
-                    var data = buffer.BufferData;
-                    var size = buffer.Length;
-                    _writer.Write(data, 0, size);
+                    _writer.Write(buffer.BufferData, buffer.Offset, buffer.Length);
                 }
                 catch (Exception)
                 {
