@@ -73,7 +73,7 @@ namespace HighPerformance.Textbook.Chapter06
             }
         }
 
-        public void SortThem(int[] a)
+        public void Shellsort(int[] a)
         {
             if (a.Length < MinDivisible)
             {

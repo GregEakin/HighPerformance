@@ -15,35 +15,34 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-using System;
-using HighPerformance.Textbook.Chapter06;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Security.Cryptography;
 
-namespace HighPerformanceTests.Textbook.Chapter06Tests
+namespace HighPerformance.Textbook.Chapter03
 {
-    [TestClass]
-    public class LongestCommonSubsequenceTests
+    public class Buffer
     {
-        [TestMethod]
-        public void Test1()
-        {
-            var s0 = "abc";
-            var s1 = "ac";
-            var nt = 2;
-            var lcs = new LongestCommonSubsequence(s0, s1, nt);
+        private int _size;
 
-            WriteMatrix(lcs.Array);
-            Assert.AreEqual(2, lcs.Length);
+        public Buffer(int bufferSize)
+        {
+            BufferData = new byte[bufferSize];
+            _size = bufferSize;
         }
 
-        private static void WriteMatrix(int[,] a)
-        {
-            for (var i = 0; i < a.GetLength(0); i++)
-            {
-                for (var j = 0; j < a.GetLength(1); j++)
-                    Console.Write($"{a[i, j]} ");
+        public byte[] BufferData { get; private set; }
 
-                Console.WriteLine();
+        public int Length
+        {
+            get { return _size; }
+            set
+            {
+                if (value > _size)
+                {
+                    var buffer = new byte[value];
+                    BufferData.CopyTo(buffer, 0);
+                    BufferData = buffer;
+                }
+                _size = value;
             }
         }
     }

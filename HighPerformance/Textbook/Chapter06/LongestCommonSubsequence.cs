@@ -29,6 +29,13 @@ namespace HighPerformance.Textbook.Chapter06
 
         public LongestCommonSubsequence(char[] c0, char[] c1, int numberThreads)
         {
+            if (c0 == null || c0.Length <= 0)
+                throw new ArgumentException(nameof(c0));
+            if (c1 == null || c1.Length <= 0)
+                throw new ArgumentException(nameof(c1));
+            if (numberThreads <= 0) // || numberThreads > c1.Length)
+                throw new ArgumentException(nameof(numberThreads));
+
             _c0 = c0;
             _c1 = c1;
             _a = new int[_c0.Length + 1, _c1.Length + 1];
@@ -42,13 +49,13 @@ namespace HighPerformance.Textbook.Chapter06
             });
 
             var left = new SemaphoreSlim(c0.Length);
-            for (var i = 0; i < numberThreads; i++)
+            for (var thread = 0; thread < numberThreads; thread++)
             {
                 var right = new SemaphoreSlim(0);
-                var low = StartOfBand(i, numberThreads, _c1.Length);
-                var high = StartOfBand(i + 1, numberThreads, _c1.Length) - 1;
-                bands[i] = new Band(low, high, left, right, _c0, _c1, _a);
-                bands[i].Thread.Start();
+                var low = StartOfBand(thread, numberThreads, _c1.Length);
+                var high = StartOfBand(thread + 1, numberThreads, _c1.Length) - 1;
+                bands[thread] = new Band(low, high, left, right, _c0, _c1, _a);
+                bands[thread].Thread.Start();
                 left = right;
             }
         }
@@ -79,6 +86,7 @@ namespace HighPerformance.Textbook.Chapter06
 
                 Thread = new Thread(Run);
                 ManualEvent = new ManualResetEvent(false);
+                Console.WriteLine($"new Band({low}, {high})");
             }
 
             public ManualResetEvent ManualEvent { get; }
@@ -104,9 +112,9 @@ namespace HighPerformance.Textbook.Chapter06
             }
         }
 
-        private static int StartOfBand(int i, int nb, int n)
+        private static int StartOfBand(int thread, int numberThreads, int c1Length)
         {
-            return 1 + i * (n / nb) + Math.Min(i, n % nb);
+            return thread * (c1Length / numberThreads) + Math.Min(thread, c1Length % numberThreads) + 1;
         }
 
         public int Length

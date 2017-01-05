@@ -15,40 +15,36 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-using System;
-using HighPerformance.Textbook.Chapter06;
+using System.IO;
+using HighPerformance.Textbook.Chapter03;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HighPerformanceTests.Textbook.Chapter06Tests
+namespace HighPerformanceTests.Textbook.Chapter03
 {
     [TestClass]
-    public class ShellsortBarrierTests
+    public class FileCopyTests
     {
-        private readonly Random _random = new Random();
-
         [TestMethod]
         public void Test1()
         {
-            var a = new int[20];
-            for (var i = a.Length - 1; i >= 0; i--)
-                a[i] = _random.Next(90) + 10;
+            var pool = new Pool(5, 100);
+            var copyBuffers = new BufferQueue();
 
-            WriteArray(a);
+            var data = new byte[] { 0xA5, 0x5A };
+            var source = new MemoryStream(data);
+            using (var reader = new FileCopyReader1(source, pool, copyBuffers))
+            {
+                reader.Run();
+            }
 
-            var s = new ShellsortBarrier(3);
-            s.Shellsort(a);
+            var dest = new MemoryStream();
+            using (var writer = new FileCopyWriter1(dest, pool, copyBuffers))
+            {
+                writer.Run();
+            }
 
-            WriteArray(a);
-
-            for (var i = a.Length - 2; i >= 0; i--)
-                Assert.IsTrue(a[i+1] <= a[i]);
-        }
-
-        private static void WriteArray(int[] a)
-        {
-            for (var i = a.Length - 1; i >= 0; i--)
-                Console.Write(" " + a[i]);
-            Console.WriteLine();
+            var result = dest.ToArray();
+            CollectionAssert.AreEqual(data, result);
         }
     }
 }

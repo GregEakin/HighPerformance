@@ -15,35 +15,36 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-using System;
-using HighPerformance.Textbook.Chapter06;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Threading;
 
-namespace HighPerformanceTests.Textbook.Chapter06Tests
+namespace HighPerformance.Textbook.Chapter03
 {
-    [TestClass]
-    public class LongestCommonSubsequenceTests
+    public class BufferQueue
     {
-        [TestMethod]
-        public void Test1()
-        {
-            var s0 = "abc";
-            var s1 = "ac";
-            var nt = 2;
-            var lcs = new LongestCommonSubsequence(s0, s1, nt);
+        private readonly object _lock = new object();
 
-            WriteMatrix(lcs.Array);
-            Assert.AreEqual(2, lcs.Length);
+        public List<Buffer> Buffers { get; } = new List<Buffer>();
+
+        public void EnqueueBuffer(Buffer buffer)
+        {
+            lock (_lock)
+            {
+                if (Buffers.Count == 0)
+                    Monitor.Pulse(_lock);
+                Buffers.Add(buffer);
+            }
         }
 
-        private static void WriteMatrix(int[,] a)
+        public Buffer DequeueBuffer()
         {
-            for (var i = 0; i < a.GetLength(0); i++)
+            lock (_lock)
             {
-                for (var j = 0; j < a.GetLength(1); j++)
-                    Console.Write($"{a[i, j]} ");
-
-                Console.WriteLine();
+                while (Buffers.Count == 0)
+                    Monitor.Pulse(_lock);
+                var buffer = Buffers[0];
+                Buffers.RemoveAt(0);
+                return buffer;
             }
         }
     }
